@@ -19,6 +19,11 @@ export interface UpdateBookArgs {
     price: number;
 }
 
+export interface LoginUserInput {
+    email: string;
+    password: string;
+}
+
 export interface RegistrationArgs {
     name: string;
     email: string;
@@ -31,18 +36,21 @@ export interface Book {
     price: number;
 }
 
+export interface LoginResponse {
+    access_token: string;
+}
+
 export interface IQuery {
     index(): string | Promise<string>;
     books(): Book[] | Promise<Book[]>;
     bookById(bookId: number): Nullable<Book> | Promise<Nullable<Book>>;
-    login(email: string, password: string): string | Promise<string>;
-    secured(): string | Promise<string>;
 }
 
 export interface IMutation {
     deleteBook(bookId: number): string | Promise<string>;
     addBook(addBookArgs: AddBookArgs): string | Promise<string>;
     updateBook(updateBookArgs: UpdateBookArgs): string | Promise<string>;
+    login(loginUserInput: LoginUserInput): LoginResponse | Promise<LoginResponse>;
     register(registrationArgs: RegistrationArgs): string | Promise<string>;
 }
 

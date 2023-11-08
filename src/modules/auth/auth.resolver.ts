@@ -1,31 +1,27 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Context, Query, Resolver } from '@nestjs/graphql';
-
-import { AuthGuard } from './auth.guard';
-
-import { UserEntity } from '../user/entity/user.entity';
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 
 import { AuthService } from '../auth/auth.service';
-import { JwtGuard } from './jwt.auth.guard';
+import { LoginResponse } from './dto/login-response';
+import { LoginUserInput } from './dto/login-user.input';
+import { GqlAuthGuard } from './gql-auth.guard';
+import { RegistrationArgs } from './args/registration.args';
 
 @Resolver(() => String)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  // create Login schema and return object instead of string of token
-  @Query(() => String)
-  @UseGuards(AuthGuard)
+  @Mutation(() => LoginResponse)
+  @UseGuards(GqlAuthGuard)
   login(
-    @Args({ name: 'email', type: () => String }) email: string,
-    @Args({ name: 'password', type: () => String }) password: string,
-    @Context('user') user: UserEntity,
+    @Args('loginUserInput') loginUserInput: LoginUserInput,
+    @Context() context,
   ) {
-    return this.authService.generateToken(user);
+    return this.authService.login(context.user);
   }
 
-  @Query(() => String)
-  @UseGuards(JwtGuard)
-  secured(): string {
-    return 'THis is secured NestJs GraphQL Server.';
+  @Mutation(() => String, { name: 'register' })
+  async register(@Args('registrationArgs') registrationArgs: RegistrationArgs) {
+    return await this.authService.register(registrationArgs);
   }
 }

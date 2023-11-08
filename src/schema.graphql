@@ -8,18 +8,21 @@ type Book {
   price: Int!
 }
 
+type LoginResponse {
+  access_token: String!
+}
+
 type Query {
   index: String!
   books: [Book!]!
   bookById(bookId: Int!): Book
-  login(email: String!, password: String!): String!
-  secured: String!
 }
 
 type Mutation {
   deleteBook(bookId: Int!): String!
   addBook(addBookArgs: AddBookArgs!): String!
   updateBook(updateBookArgs: UpdateBookArgs!): String!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
   register(registrationArgs: RegistrationArgs!): String!
 }
 
@@ -32,6 +35,11 @@ input UpdateBookArgs {
   id: Int!
   title: String!
   price: Int!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
 }
 
 input RegistrationArgs {

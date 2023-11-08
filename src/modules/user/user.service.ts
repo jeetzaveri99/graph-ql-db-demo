@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEntity } from './entity/user.entity';
-import { RegistrationArgs } from './args/registration.args';
+import { RegistrationArgs } from '../auth/args/registration.args';
 
 @Injectable()
 export class UserService {
@@ -16,13 +16,12 @@ export class UserService {
     return await this.userRepo.findOne({ where: { email } });
   }
 
-  async register(registrationArgs: RegistrationArgs): Promise<string> {
+  async create(registrationArgs: RegistrationArgs): Promise<UserEntity> {
     const user: UserEntity = new UserEntity();
     user.name = registrationArgs.name;
     user.email = registrationArgs.email;
     user.password = registrationArgs.password;
 
-    await this.userRepo.save(user);
-    return 'User Registered Successfully.';
+    return await this.userRepo.save(user);
   }
 }
