@@ -2,10 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Book {
-  id: Int!
+type UserEntity {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  role: String!
+  books: [BookEntity!]
+}
+
+type BookEntity {
+  id: ID!
   title: String!
   price: Int!
+  userId: Int!
+  user: UserEntity!
 }
 
 type LoginResponse {
@@ -14,8 +25,8 @@ type LoginResponse {
 
 type Query {
   index: String!
-  books: [Book!]!
-  bookById(bookId: Int!): Book
+  books: [BookEntity!]!
+  bookById(bookId: Int!): BookEntity
 }
 
 type Mutation {

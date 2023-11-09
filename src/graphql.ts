@@ -30,10 +30,21 @@ export interface RegistrationArgs {
     password: string;
 }
 
-export interface Book {
-    id: number;
+export interface UserEntity {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    books?: Nullable<BookEntity[]>;
+}
+
+export interface BookEntity {
+    id: string;
     title: string;
     price: number;
+    userId: number;
+    user: UserEntity;
 }
 
 export interface LoginResponse {
@@ -42,8 +53,8 @@ export interface LoginResponse {
 
 export interface IQuery {
     index(): string | Promise<string>;
-    books(): Book[] | Promise<Book[]>;
-    bookById(bookId: number): Nullable<Book> | Promise<Nullable<Book>>;
+    books(): BookEntity[] | Promise<BookEntity[]>;
+    bookById(bookId: number): Nullable<BookEntity> | Promise<Nullable<BookEntity>>;
 }
 
 export interface IMutation {
